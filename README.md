@@ -1,3 +1,3 @@
 # Gutenberg Theme.json Creator
 
-> http://gutenberg-theme.xyz/
+> https://gutenberg-theme.xyz/
