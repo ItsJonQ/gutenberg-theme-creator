@@ -8,12 +8,19 @@ export const UnitControl = React.memo(() => {
 	const prop = `global.settings.spacing.units`;
 	const [value, update] = useConfigProp(prop);
 
-	const onChange = React.useCallback(value => update({ prop, value }), [
-		prop,
-		update
-	]);
+	const onChange = React.useCallback(
+		value => {
+			const parsedUnits = value
+				.trim()
+				.split(",")
+				.map(v => `${v.trim()}`);
+			update({ prop, value: parsedUnits });
+		},
+		[prop, update]
+	);
 
 	if (!isVisible) return null;
+	console.log(value);
 
 	return (
 		<FormControl
