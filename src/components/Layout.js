@@ -84,7 +84,7 @@ const CodePreview = React.memo(() => {
 				>
 					<Card>
 						<CardHeader size="small">
-							<Subheading>Theme.json</Subheading>
+							<Subheading>experimental-theme.json</Subheading>
 							<CopyToClipboardButton value={JSON.stringify(config, null, 2)} />
 						</CardHeader>
 						<View>
