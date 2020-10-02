@@ -79,7 +79,7 @@ export const useUrlSync = () => {
 			let encoded = decodeURIComponent(config);
 			try {
 				encoded = JSON.parse(atob(encoded));
-				store.setState(prev => ({ ...prev, config: encoded }));
+				store.setState(prev => ({ ...prev, config: encoded, hasChange: true }));
 			} catch (err) {
 				console.log("Could not load config");
 			}
