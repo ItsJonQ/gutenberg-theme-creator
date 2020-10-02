@@ -3,13 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
     "@wp-g2/components": "^0.0.81",
     "@wp-g2/icons": "^0.0.81",
-    "@wp-g2/styles": "^0.0.81",
     "@wp-g2/protokit": "^0.0.81",
+    "@wp-g2/styles": "^0.0.81",
     "@wp-g2/substate": "^0.0.81",
     "@wp-g2/utils": "^0.0.81",
     "lodash": "4.17.20",
@@ -17,8 +14,17 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3"
   },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "husky": ">=4",
+    "lint-staged": ">=10",
+    "prettier": "2.1.2"
+  },
   "scripts": {
     "start": "react-scripts start",
+    "format": "prettier src/**/*.js --write",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -37,5 +43,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.--write": "prettier --write"
   }
 }

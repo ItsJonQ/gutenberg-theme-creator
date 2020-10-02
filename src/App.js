@@ -1,7 +1,7 @@
-import React from 'react';
-import { FiPlus, FiMinus } from '@wp-g2/icons';
-import { get, set as resolve } from 'lodash';
-import { faker } from '@wp-g2/protokit';
+import React from "react";
+import { FiPlus, FiMinus } from "@wp-g2/icons";
+import { get, set as resolve } from "lodash";
+import { faker } from "@wp-g2/protokit";
 import {
 	Badge,
 	Button,
@@ -22,25 +22,25 @@ import {
 	Text,
 	TextInput,
 	View,
-	VStack,
-} from '@wp-g2/components';
-import { createStore } from '@wp-g2/substate';
+	VStack
+} from "@wp-g2/components";
+import { createStore } from "@wp-g2/substate";
 
 const colorSchema = () => {
 	return {
 		slug: faker.lorem.word(),
-		color: faker.internet.color(),
+		color: faker.internet.color()
 	};
 };
 
 const gradientSchema = () => {
 	return {
 		slug: faker.lorem.word(),
-		gradient: '',
+		gradient: ""
 	};
 };
 
-const useConfig = createStore((set) => ({
+const useConfig = createStore(set => ({
 	config: {
 		global: {
 			settings: {
@@ -49,20 +49,20 @@ const useConfig = createStore((set) => ({
 					customGradient: true,
 					link: false,
 					palette: [],
-					gradients: [],
-				},
-			},
-		},
+					gradients: []
+				}
+			}
+		}
 	},
-	update: (key) => (next) => {
-		set((prev) => {
+	update: key => next => {
+		set(prev => {
 			return { ...resolve(prev, `config.${key}`, next) };
 		});
-	},
+	}
 }));
 
-const useConfigProp = (prop) => {
-	return useConfig((state) => {
+const useConfigProp = prop => {
+	return useConfig(state => {
 		const { config, update } = state;
 		return [get(config, prop), update(prop)];
 	});
@@ -78,11 +78,7 @@ function App() {
 				<PanelHeader>Color</PanelHeader>
 				<PanelBody>
 					<ListGroup>
-						<SwitchControl
-							label="Custom"
-							helpText="Enable custom colors"
-							prop="global.settings.color.custom"
-						/>
+						<SwitchControl label="Custom" helpText="Enable custom colors" prop="global.settings.color.custom" />
 						<SwitchControl
 							label="Custom Gradient"
 							helpText="Enable custom gradients"
@@ -150,12 +146,7 @@ function Logo() {
 	);
 }
 
-function FormControl({
-	label,
-	helpText,
-	children,
-	templateColumns = '1fr 35%',
-}) {
+function FormControl({ label, helpText, children, templateColumns = "1fr 35%" }) {
 	return (
 		<FormGroup templateColumns={templateColumns}>
 			<VStack spacing={0}>
@@ -182,9 +173,7 @@ function SwitchControl({ label, helpText, prop }) {
 }
 
 function PaletteColor({ index = 0, onRemove }) {
-	const [palette, update] = useConfigProp(
-		`global.settings.color.palette[${index}]`
-	);
+	const [palette, update] = useConfigProp(`global.settings.color.palette[${index}]`);
 
 	return (
 		<VStack css="padding-left: 60px;">
@@ -193,10 +182,10 @@ function PaletteColor({ index = 0, onRemove }) {
 					<ControlLabel>Slug</ControlLabel>
 					<TextInput
 						placeholder="strong-magenta"
-						onChange={(next) => {
+						onChange={next => {
 							update({
 								slug: next,
-								color: palette.color,
+								color: palette.color
 							});
 						}}
 						value={palette.slug}
@@ -206,23 +195,17 @@ function PaletteColor({ index = 0, onRemove }) {
 					<ControlLabel>Color</ControlLabel>
 					<input
 						type="color"
-						onChange={(event) =>
+						onChange={event =>
 							update({
 								slug: palette.slug,
-								color: event.target.value,
+								color: event.target.value
 							})
 						}
 						value={palette.color}
 					/>
 				</HStack>
 				<View>
-					<Button
-						icon={<FiMinus />}
-						isSubtle
-						isControl
-						size="small"
-						onClick={onRemove}
-					/>
+					<Button icon={<FiMinus />} isSubtle isControl size="small" onClick={onRemove} />
 				</View>
 			</Grid>
 		</VStack>
@@ -234,23 +217,20 @@ function PaletteControl() {
 	const [palette] = useConfigProp(`global.settings.color.palette`);
 
 	const addColor = () => {
-		store.setState((prev) => {
-			const prevData = get(prev, 'config.global.settings.color.palette');
-			const next = resolve(prev, 'config.global.settings.color.palette', [
-				...prevData,
-				colorSchema(),
-			]);
+		store.setState(prev => {
+			const prevData = get(prev, "config.global.settings.color.palette");
+			const next = resolve(prev, "config.global.settings.color.palette", [...prevData, colorSchema()]);
 
 			return { ...next };
 		});
 	};
 
-	const removeColor = (index) => {
-		store.setState((prev) => {
-			const prevData = get(prev, 'config.global.settings.color.palette');
+	const removeColor = index => {
+		store.setState(prev => {
+			const prevData = get(prev, "config.global.settings.color.palette");
 			const next = resolve(
 				prev,
-				'config.global.settings.color.palette',
+				"config.global.settings.color.palette",
 				prevData.filter((item, i) => i !== index)
 			);
 
@@ -261,26 +241,13 @@ function PaletteControl() {
 	return (
 		<View>
 			<ListGroup>
-				<FormControl
-					label="Palette"
-					helpText="Enables color presets"
-					templateColumns="1fr auto"
-				>
+				<FormControl label="Palette" helpText="Enables color presets" templateColumns="1fr auto">
 					<View>
-						<Button
-							icon={<FiPlus />}
-							isControl
-							size="small"
-							onClick={addColor}
-						/>
+						<Button icon={<FiPlus />} isControl size="small" onClick={addColor} />
 					</View>
 				</FormControl>
 				{palette.map((entry, index) => (
-					<PaletteColor
-						key={index}
-						index={index}
-						onRemove={() => removeColor(index)}
-					/>
+					<PaletteColor key={index} index={index} onRemove={() => removeColor(index)} />
 				))}
 			</ListGroup>
 		</View>
@@ -288,9 +255,7 @@ function PaletteControl() {
 }
 
 function GradientColor({ index = 0, onRemove }) {
-	const [gradients, update] = useConfigProp(
-		`global.settings.color.gradients[${index}]`
-	);
+	const [gradients, update] = useConfigProp(`global.settings.color.gradients[${index}]`);
 
 	return (
 		<VStack css="padding-left: 60px;">
@@ -299,10 +264,10 @@ function GradientColor({ index = 0, onRemove }) {
 					<ControlLabel>Slug</ControlLabel>
 					<TextInput
 						placeholder="strong-magenta"
-						onChange={(next) => {
+						onChange={next => {
 							update({
 								slug: next,
-								gradient: gradients.gradient,
+								gradient: gradients.gradient
 							});
 						}}
 						value={gradients.slug}
@@ -311,23 +276,17 @@ function GradientColor({ index = 0, onRemove }) {
 				<HStack alignment="left">
 					<ControlLabel>Gradient</ControlLabel>
 					<TextInput
-						onChange={(next) => {
+						onChange={next => {
 							update({
 								slug: gradients.slug,
-								gradient: next,
+								gradient: next
 							});
 						}}
 						value={gradients.gradient}
 					/>
 				</HStack>
 				<View>
-					<Button
-						icon={<FiMinus />}
-						isSubtle
-						isControl
-						size="small"
-						onClick={onRemove}
-					/>
+					<Button icon={<FiMinus />} isSubtle isControl size="small" onClick={onRemove} />
 				</View>
 			</Grid>
 		</VStack>
@@ -339,30 +298,20 @@ function GradientControl() {
 	const [gradients] = useConfigProp(`global.settings.color.gradients`);
 
 	const addGradient = () => {
-		store.setState((prev) => {
-			const prevData = get(
-				prev,
-				'config.global.settings.color.gradients'
-			);
-			const next = resolve(
-				prev,
-				'config.global.settings.color.gradients',
-				[...prevData, gradientSchema()]
-			);
+		store.setState(prev => {
+			const prevData = get(prev, "config.global.settings.color.gradients");
+			const next = resolve(prev, "config.global.settings.color.gradients", [...prevData, gradientSchema()]);
 
 			return { ...next };
 		});
 	};
 
-	const removeGradient = (index) => {
-		store.setState((prev) => {
-			const prevData = get(
-				prev,
-				'config.global.settings.color.gradients'
-			);
+	const removeGradient = index => {
+		store.setState(prev => {
+			const prevData = get(prev, "config.global.settings.color.gradients");
 			const next = resolve(
 				prev,
-				'config.global.settings.color.gradients',
+				"config.global.settings.color.gradients",
 				prevData.filter((item, i) => i !== index)
 			);
 
@@ -373,26 +322,13 @@ function GradientControl() {
 	return (
 		<View>
 			<ListGroup>
-				<FormControl
-					label="Gradients"
-					helpText="Enables gradient presets"
-					templateColumns="1fr auto"
-				>
+				<FormControl label="Gradients" helpText="Enables gradient presets" templateColumns="1fr auto">
 					<View>
-						<Button
-							icon={<FiPlus />}
-							isControl
-							size="small"
-							onClick={addGradient}
-						/>
+						<Button icon={<FiPlus />} isControl size="small" onClick={addGradient} />
 					</View>
 				</FormControl>
 				{gradients.map((entry, index) => (
-					<GradientColor
-						key={index}
-						index={index}
-						onRemove={() => removeGradient(index)}
-					/>
+					<GradientColor key={index} index={index} onRemove={() => removeGradient(index)} />
 				))}
 			</ListGroup>
 		</View>
