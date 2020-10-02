@@ -20,7 +20,6 @@ export const UnitControl = React.memo(() => {
 	);
 
 	if (!isVisible) return null;
-	console.log(value);
 
 	return (
 		<FormControl
