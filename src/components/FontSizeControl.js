@@ -1,7 +1,6 @@
 import React from "react";
 import { FiPlus, FiMinus } from "@wp-g2/icons";
 import { faker } from "@wp-g2/protokit";
-import { get, set as resolve } from "lodash";
 import { FormControl, TextInput } from "./Controls";
 import {
 	Button,
@@ -12,11 +11,12 @@ import {
 	View,
 	VStack
 } from "@wp-g2/components";
+import { SearchableItem } from "./Search";
 import {
-	useFontSizes,
-	useConfig,
 	useConfigProp,
-	useSearchQueryProp
+	useFontSizes,
+	useAddToList,
+	useRemoveFromList
 } from "../store";
 
 const fontSizeSchema = () => {
@@ -47,22 +47,13 @@ const fontSizeSchema = () => {
 };
 
 const FontSizeItem = React.memo(({ index = 0 }) => {
-	const store = useConfig;
 	const prop = `global.settings.typography.fontSizes[${index}]`;
 	const [fontSize, update] = useConfigProp(prop);
 
-	const onRemove = React.useCallback(() => {
-		store.setState(prev => {
-			const prevData = get(prev, "config.global.settings.typography.fontSizes");
-			const next = resolve(
-				prev,
-				"config.global.settings.typography.fontSizes",
-				prevData.filter((item, i) => i !== index)
-			);
-
-			return { ...next };
-		});
-	}, [store, index]);
+	const onRemove = useRemoveFromList({
+		prop: "config.global.settings.typography.fontSizes",
+		index
+	});
 
 	const updateSlug = React.useCallback(
 		next => {
@@ -142,44 +133,37 @@ const FontSizeList = React.memo(() => {
 	);
 });
 
-export const FontSizeControl = React.memo(() => {
-	const [isVisible] = useSearchQueryProp("fontsize");
-	const store = useConfig;
-
-	const addFontSize = React.useCallback(() => {
-		store.setState(prev => {
-			const prevData = get(prev, "config.global.settings.typography.fontSizes");
-			const next = resolve(
-				prev,
-				"config.global.settings.typography.fontSizes",
-				[...prevData, fontSizeSchema()]
-			);
-
-			return { ...next, hasChange: true };
-		});
-	}, [store]);
-
-	if (!isVisible) return null;
+const FontSizeHeader = React.memo(() => {
+	const addFontSize = useAddToList({
+		prop: "config.global.settings.typography.fontSizes",
+		createData: fontSizeSchema
+	});
 
 	return (
-		<View>
+		<FormControl
+			label="Font Sizes"
+			helpText="Add custom font sizes"
+			templateColumns="1fr auto"
+		>
+			<View>
+				<Button
+					icon={<FiPlus />}
+					isControl
+					size="small"
+					onClick={addFontSize}
+				/>
+			</View>
+		</FormControl>
+	);
+});
+
+export const FontSizeControl = React.memo(() => {
+	return (
+		<SearchableItem prop="fontsize">
 			<ListGroup>
-				<FormControl
-					label="Font Sizes"
-					helpText="Add custom font sizes"
-					templateColumns="1fr auto"
-				>
-					<View>
-						<Button
-							icon={<FiPlus />}
-							isControl
-							size="small"
-							onClick={addFontSize}
-						/>
-					</View>
-				</FormControl>
+				<FontSizeHeader />
 				<FontSizeList />
 			</ListGroup>
-		</View>
+		</SearchableItem>
 	);
 });

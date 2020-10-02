@@ -2,7 +2,6 @@ import React from "react";
 import { FiPlus, FiMinus } from "@wp-g2/icons";
 import { faker } from "@wp-g2/protokit";
 import { ui } from "@wp-g2/styles";
-import { get, set as resolve } from "lodash";
 import { FormControl, TextInput } from "./Controls";
 import {
 	Button,
@@ -12,11 +11,12 @@ import {
 	View,
 	VStack
 } from "@wp-g2/components";
+import { SearchableItem } from "./Search";
 import {
-	useConfig,
 	useConfigProp,
+	useAddToList,
 	usePalette,
-	useSearchQueryProp
+	useRemoveFromList
 } from "../store";
 
 const colorSchema = () => {
@@ -28,22 +28,13 @@ const colorSchema = () => {
 };
 
 const PaletteColor = React.memo(({ index = 0 }) => {
-	const store = useConfig;
 	const prop = `global.settings.color.palette[${index}]`;
 	const [palette, update] = useConfigProp(prop);
 
-	const onRemove = React.useCallback(() => {
-		store.setState(prev => {
-			const prevData = get(prev, "config.global.settings.color.palette");
-			const next = resolve(
-				prev,
-				"config.global.settings.color.palette",
-				prevData.filter((item, i) => i !== index)
-			);
-
-			return { ...next };
-		});
-	}, [store, index]);
+	const onRemove = useRemoveFromList({
+		prop: "config.global.settings.color.palette",
+		index
+	});
 
 	const updateSlug = React.useCallback(
 		next => {
@@ -97,9 +88,9 @@ const PaletteColor = React.memo(({ index = 0 }) => {
 						alignLabel="right"
 						gap={5}
 					>
-						<input
+						<TextInput
 							type="color"
-							onChange={event => updateValue(event.target.value)}
+							onChange={updateValue}
 							value={palette.color}
 						/>
 					</FormGroup>
@@ -135,43 +126,32 @@ const PaletteList = React.memo(() => {
 	);
 });
 
-export const PaletteControl = React.memo(() => {
-	const [isVisible] = useSearchQueryProp("palette");
-	const store = useConfig;
-
-	const addColor = () => {
-		store.setState(prev => {
-			const prevData = get(prev, "config.global.settings.color.palette");
-			const next = resolve(prev, "config.global.settings.color.palette", [
-				...prevData,
-				colorSchema()
-			]);
-
-			return { ...next, hasChange: true };
-		});
-	};
-
-	if (!isVisible) return null;
+const PaletteHeader = React.memo(() => {
+	const addColor = useAddToList({
+		prop: "config.global.settings.color.palette",
+		createData: colorSchema
+	});
 
 	return (
-		<View>
+		<FormControl
+			label="Palette"
+			helpText="Add custom color presets"
+			templateColumns="1fr auto"
+		>
+			<View>
+				<Button icon={<FiPlus />} isControl size="small" onClick={addColor} />
+			</View>
+		</FormControl>
+	);
+});
+
+export const PaletteControl = React.memo(() => {
+	return (
+		<SearchableItem prop="palette">
 			<ListGroup>
-				<FormControl
-					label="Palette"
-					helpText="Add custom color presets"
-					templateColumns="1fr auto"
-				>
-					<View>
-						<Button
-							icon={<FiPlus />}
-							isControl
-							size="small"
-							onClick={addColor}
-						/>
-					</View>
-				</FormControl>
+				<PaletteHeader />
 				<PaletteList />
 			</ListGroup>
-		</View>
+		</SearchableItem>
 	);
 });

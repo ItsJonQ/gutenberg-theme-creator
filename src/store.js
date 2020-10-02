@@ -2,7 +2,7 @@ import React from "react";
 import { get, set as resolve } from "lodash";
 import queryString from "query-string";
 
-import { createStore } from "@wp-g2/substate";
+import { createStore, shallowCompare } from "@wp-g2/substate";
 
 /**
  * Source:
@@ -39,6 +39,11 @@ const __initialState__ = {
 };
 
 const initialState = JSON.parse(JSON.stringify(__initialState__));
+
+export const useSearchQuery = createStore(set => ({
+	searchQuery: "",
+	setSearchQuery: next => set({ searchQuery: next })
+}));
 
 export const useConfig = createStore(set => ({
 	config: initialState,
@@ -102,33 +107,15 @@ export const useUrlSync = () => {
 	}, [store]);
 };
 
-export const useSearchQuery = () => {
-	return useConfig(
-		React.useCallback(state => {
-			const { searchQuery, setState } = state;
-			const update = next => setState({ searchQuery: next });
-
-			return [searchQuery, update];
-		}, [])
-	);
-};
-
 export const useSearchQueryProp = prop => {
-	return useConfig(
-		React.useCallback(
-			state => {
-				const { searchQuery } = state;
-				let isVisible = true;
+	const { searchQuery } = useSearchQuery();
+	let isVisible = true;
 
-				if (prop && searchQuery) {
-					isVisible = prop?.toLowerCase().includes(searchQuery.toLowerCase());
-				}
+	if (prop && searchQuery) {
+		isVisible = prop?.toLowerCase().includes(searchQuery.toLowerCase());
+	}
 
-				return [isVisible, searchQuery];
-			},
-			[prop]
-		)
-	);
+	return [isVisible, searchQuery];
 };
 
 export const useConfigProp = prop => {
@@ -139,48 +126,60 @@ export const useConfigProp = prop => {
 				return [get(config, prop), updateProp];
 			},
 			[prop]
-		)
+		),
+		/**
+		 * This makes a big difference!
+		 * https://github.com/pmndrs/zustand#selecting-multiple-state-slices
+		 */
+		shallowCompare
 	);
 };
 
 export const usePalette = () => {
-	return useConfig(
-		React.useCallback(state => {
-			const { config, updateProp } = state;
-			return [
-				get(config, `global.settings.color.palette`).map(
-					(entry, index) => index
-				),
-				updateProp
-			];
-		}, [])
-	);
+	return useConfigProp(`global.settings.color.palette`);
 };
 
 export const useGradients = () => {
-	return useConfig(
-		React.useCallback(state => {
-			const { config, updateProp } = state;
-			return [
-				get(config, `global.settings.color.gradients`).map(
-					(entry, index) => index
-				),
-				updateProp
-			];
-		}, [])
-	);
+	return useConfigProp(`global.settings.color.gradients`);
 };
 
 export const useFontSizes = () => {
-	return useConfig(
-		React.useCallback(state => {
-			const { config, updateProp } = state;
-			return [
-				get(config, `global.settings.typography.fontSizes`).map(
-					(entry, index) => index
-				),
-				updateProp
-			];
-		}, [])
-	);
+	return useConfigProp(`global.settings.typography.fontSizes`);
+};
+
+export const useAddToList = ({ prop, createData }) => {
+	const store = useConfig;
+
+	const onAdd = React.useCallback(() => {
+		store.setState(prev => {
+			const prevData = get(prev, prop);
+			const next = resolve(prev, prop, [
+				...prevData,
+				createData && createData()
+			]);
+
+			return { ...next, hasChange: true };
+		});
+	}, [createData, prop, store]);
+
+	return onAdd;
+};
+
+export const useRemoveFromList = ({ prop, index }) => {
+	const store = useConfig;
+
+	const onRemove = React.useCallback(() => {
+		store.setState(prev => {
+			const prevData = get(prev, prop);
+			const next = resolve(
+				prev,
+				prop,
+				prevData.filter((item, i) => i !== index)
+			);
+
+			return { ...next };
+		});
+	}, [store, prop, index]);
+
+	return onRemove;
 };

@@ -11,21 +11,20 @@ import {
 	Link,
 	Separator,
 	Spacer,
-	SearchInput,
 	VStack,
 	Text
 } from "@wp-g2/components";
+import { ConfigSearch } from "./components/Search";
 import { GradientControl } from "./components/GradientControl";
 import { PaletteControl } from "./components/PaletteControl";
 import { UnitControl } from "./components/UnitControl";
 import { FontSizeControl } from "./components/FontSizeControl";
-import { useUrlSync, useConfig, useSearchQuery } from "./store";
+import { useUrlSync, useConfig } from "./store";
 
 const ColorPanel = React.memo(() => {
 	return (
 		<ListGroup>
 			<ListGroupHeader>Color</ListGroupHeader>
-
 			<SwitchControl
 				label="Custom"
 				helpText="Enable custom colors"
@@ -104,11 +103,6 @@ const Header = React.memo(() => {
 	);
 });
 
-const ConfigSearch = React.memo(() => {
-	const [value, onChange] = useSearchQuery();
-	return <SearchInput value={value} onChange={onChange} />;
-});
-
 const AppUrlSync = React.memo(() => {
 	useUrlSync();
 	return null;
@@ -150,7 +144,7 @@ function App() {
 					<ConfigSearch />
 				</VStack>
 			</Spacer>
-			<ListGroups spacing={12}>
+			<ListGroups spacing={20}>
 				<ColorPanel />
 				<SpacingPanel />
 				<TypographyPanel />

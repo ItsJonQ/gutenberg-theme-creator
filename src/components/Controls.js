@@ -9,30 +9,25 @@ import {
 } from "@wp-g2/components";
 import { is, noop } from "@wp-g2/utils";
 import { useSubState } from "@wp-g2/substate";
-import { useConfigProp, useSearchQueryProp } from "../store";
+import { SearchableItem } from "./Search";
+import { useConfigProp } from "../store";
 
 export const FormControl = React.memo(
 	({ label, helpText, children, templateColumns = "1fr 35%", prop }) => {
-		const [isVisible, searchQuery] = useSearchQueryProp(prop);
-		if (!isVisible) return null;
-
 		return (
-			<FormGroup templateColumns={templateColumns}>
-				<VStack spacing={0}>
-					<ControlLabel highlightWords={[searchQuery]}>{label}</ControlLabel>
-					{helpText && (
-						<Text
-							size="12"
-							variant="muted"
-							css="opacity: 0.4;"
-							highlightWords={[searchQuery]}
-						>
-							{helpText}
-						</Text>
-					)}
-				</VStack>
-				{children}
-			</FormGroup>
+			<SearchableItem prop={prop}>
+				<FormGroup templateColumns={templateColumns}>
+					<VStack spacing={0}>
+						<ControlLabel>{label}</ControlLabel>
+						{helpText && (
+							<Text size="12" variant="muted" css="opacity: 0.4;">
+								{helpText}
+							</Text>
+						)}
+					</VStack>
+					{children}
+				</FormGroup>
+			</SearchableItem>
 		);
 	}
 );
@@ -119,6 +114,13 @@ function useTextControl({
 		};
 	}, []);
 
+	const handleOnCommit = React.useCallback(
+		next => {
+			return setValue(next);
+		},
+		[setValue]
+	);
+
 	const handleOnChange = React.useCallback(() => {
 		const next = store.getState().value;
 		if (next === initialValue) return;
@@ -179,11 +181,10 @@ function useTextControl({
 		},
 		[handleOnChange, onBlur]
 	);
-
 	return {
 		onBlur: handleOnBlur,
 		onKeyDown: handleOnKeyDown,
-		onChange: setValue,
+		onChange: handleOnCommit,
 		value
 	};
 }

@@ -1,7 +1,6 @@
 import React from "react";
 import { FiPlus, FiMinus } from "@wp-g2/icons";
 import { faker } from "@wp-g2/protokit";
-import { get, set as resolve } from "lodash";
 import { FormControl, TextInput } from "./Controls";
 import { ui } from "@wp-g2/styles";
 import {
@@ -12,11 +11,12 @@ import {
 	VStack,
 	FormGroup
 } from "@wp-g2/components";
+import { SearchableItem } from "./Search";
 import {
 	useGradients,
-	useConfig,
 	useConfigProp,
-	useSearchQueryProp
+	useAddToList,
+	useRemoveFromList
 } from "../store";
 
 const gradientSchema = () => {
@@ -32,22 +32,13 @@ const gradientSchema = () => {
 };
 
 const GradientColor = React.memo(({ index = 0 }) => {
-	const store = useConfig;
 	const prop = `global.settings.color.gradients[${index}]`;
 	const [gradients, update] = useConfigProp(prop);
 
-	const onRemove = React.useCallback(() => {
-		store.setState(prev => {
-			const prevData = get(prev, "config.global.settings.color.gradients");
-			const next = resolve(
-				prev,
-				"config.global.settings.color.gradients",
-				prevData.filter((item, i) => i !== index)
-			);
-
-			return { ...next };
-		});
-	}, [store, index]);
+	const onRemove = useRemoveFromList({
+		prop: "config.global.settings.color.gradients",
+		index
+	});
 
 	const updateSlug = React.useCallback(
 		next => {
@@ -138,43 +129,37 @@ const GradientList = React.memo(() => {
 	);
 });
 
-export const GradientControl = React.memo(() => {
-	const [isVisible] = useSearchQueryProp("palette");
-	const store = useConfig;
-
-	const addGradient = React.useCallback(() => {
-		store.setState(prev => {
-			const prevData = get(prev, "config.global.settings.color.gradients");
-			const next = resolve(prev, "config.global.settings.color.gradients", [
-				...prevData,
-				gradientSchema()
-			]);
-
-			return { ...next, hasChange: true };
-		});
-	}, [store]);
-
-	if (!isVisible) return null;
+const GradientHeader = React.memo(() => {
+	const addGradient = useAddToList({
+		prop: "config.global.settings.color.gradients",
+		createData: gradientSchema
+	});
 
 	return (
-		<View>
+		<FormControl
+			label="Gradients"
+			helpText="Add custom gradient presets"
+			templateColumns="1fr auto"
+		>
+			<View>
+				<Button
+					icon={<FiPlus />}
+					isControl
+					size="small"
+					onClick={addGradient}
+				/>
+			</View>
+		</FormControl>
+	);
+});
+
+export const GradientControl = React.memo(() => {
+	return (
+		<SearchableItem prop="gradient">
 			<ListGroup>
-				<FormControl
-					label="Gradients"
-					helpText="Add custom gradient presets"
-					templateColumns="1fr auto"
-				>
-					<View>
-						<Button
-							icon={<FiPlus />}
-							isControl
-							size="small"
-							onClick={addGradient}
-						/>
-					</View>
-				</FormControl>
+				<GradientHeader />
 				<GradientList />
 			</ListGroup>
-		</View>
+		</SearchableItem>
 	);
 });
