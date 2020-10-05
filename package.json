@@ -9,6 +9,7 @@
     "@wp-g2/styles": "^0.0.85",
     "@wp-g2/substate": "^0.0.85",
     "@wp-g2/utils": "^0.0.85",
+    "flat": "5.0.2",
     "lodash": "4.17.20",
     "query-string": "6.13.5",
     "react": "^16.13.1",

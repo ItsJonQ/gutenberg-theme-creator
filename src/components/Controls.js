@@ -57,6 +57,8 @@ export const TextInput = React.memo(
 		validate,
 		value: initialValue,
 		multiline,
+		minRows,
+		type,
 		...props
 	}) => {
 		const textControl = useTextControl({
@@ -64,7 +66,9 @@ export const TextInput = React.memo(
 			validate,
 			onUpdate,
 			value: initialValue,
-			multiline
+			minRows,
+			multiline,
+			type
 		});
 
 		return (
@@ -89,7 +93,9 @@ function useTextControl({
 	value: initialValue,
 	onKeyDown = noop,
 	onUpdate = noop,
-	multiline
+	multiline,
+	minRows,
+	type
 }) {
 	const store = useSubState(set => ({
 		value: initialValue,
@@ -181,10 +187,19 @@ function useTextControl({
 		},
 		[handleOnChange, onBlur]
 	);
+
+	const isTextArea = type === "textarea";
+	const finalType = isTextArea ? "text" : type;
+	const finalMultiline = multiline || isTextArea;
+	const finalMinRows = minRows | 2;
+
 	return {
 		onBlur: handleOnBlur,
 		onKeyDown: handleOnKeyDown,
 		onChange: handleOnCommit,
-		value
+		value,
+		type: finalType,
+		multiline: finalMultiline,
+		minRows: finalMinRows
 	};
 }
