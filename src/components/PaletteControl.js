@@ -11,6 +11,7 @@ import {
 	View,
 	VStack
 } from "@wp-g2/components";
+import ColorThief from "colorthief";
 import { SearchableItem } from "./Search";
 import {
 	useConfigProp,
@@ -109,8 +110,72 @@ const PaletteColor = React.memo(({ index = 0 }) => {
 	);
 });
 
+const FancyColorExtractorThingLetsMakeThisHappenYall = () => {
+	const prop = "global.settings.color.palette";
+	const [colorPalette, update] = useConfigProp(prop);
+
+	const imageRef = React.useRef();
+
+	const handleOnLoad = event => {
+		const colorThief = new ColorThief();
+
+		const colorPaletteData = colorThief.getPalette(event.target, 10);
+
+		const next = colorPaletteData.map((data, index) => {
+			const [r, g, b] = data;
+			const slug = `palette-${index}`;
+			const color = ui.color({ r, g, b }).toHexString();
+
+			return {
+				slug,
+				color
+			};
+		});
+
+		update({ prop, value: next });
+	};
+
+	return null;
+};
+
+const FancyAutoColorPaletteFromImage = () => {
+	const prop = "global.settings.color.palette";
+	const [colorPalette, update] = useConfigProp(prop);
+
+	const handleOnChange = event => {
+		const [file] = event.target.files;
+		const imageUrl = URL.createObjectURL(file);
+		const image = new Image();
+
+		image.onload = imageEvent => {
+			const colorThief = new ColorThief();
+
+			const colorPaletteData = colorThief.getPalette(imageEvent.target, 10);
+
+			const next = colorPaletteData.map((data, index) => {
+				const [r, g, b] = data;
+				const slug = `palette-${index}`;
+				const color = ui.color({ r, g, b }).toHexString();
+
+				return {
+					slug,
+					color
+				};
+			});
+
+			update({ prop, value: next });
+		};
+
+		image.src = imageUrl;
+	};
+
+	return <input type="file" onChange={handleOnChange} />;
+};
+
 const PaletteList = React.memo(() => {
 	const [palette] = usePalette();
+	// const shouldShowAutoColorPaletteFromImageControl = palette.length;
+	const shouldShowAutoColorPaletteFromImageControl = true;
 
 	return (
 		<ListGroup
@@ -119,6 +184,9 @@ const PaletteList = React.memo(() => {
 				padding-left: 60px;
 			`}
 		>
+			{shouldShowAutoColorPaletteFromImageControl && (
+				<FancyAutoColorPaletteFromImage />
+			)}
 			{palette.map((entry, index) => (
 				<PaletteColor key={index} index={index} />
 			))}

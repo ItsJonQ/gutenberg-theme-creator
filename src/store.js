@@ -35,6 +35,15 @@ const __initialState__ = {
 				fontSizes: [] /* font size presets, as in add_theme_support('editor-font-sizes',) */
 			}
 		}
+	},
+
+	"core/paragraph": {
+		styles: {
+			typography: {
+				fontSize: "var(--wp--preset--font-size--normal)",
+				lineHeight: "1.55"
+			}
+		}
 	}
 };
 

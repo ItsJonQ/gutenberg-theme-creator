@@ -11,7 +11,10 @@
     "@wp-g2/utils": "^0.0.92",
     "flat": "5.0.2",
     "lodash": "4.17.20",
+    "fast-average-color": "^6.0.3",
+    "colorthief": "^2.3.2",
     "query-string": "6.13.5",
+    "react-frame-component": "^4.1.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3"

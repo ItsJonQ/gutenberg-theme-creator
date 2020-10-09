@@ -14,12 +14,14 @@ import {
 	VStack,
 	Text
 } from "@wp-g2/components";
+import { ui } from "@wp-g2/styles";
+import { TextInput, FormControl } from "./components/Controls";
 import { ConfigSearch } from "./components/Search";
 import { GradientControl } from "./components/GradientControl";
 import { PaletteControl } from "./components/PaletteControl";
 import { UnitControl } from "./components/UnitControl";
 import { FontSizeControl } from "./components/FontSizeControl";
-import { useUrlSync, useConfig } from "./store";
+import { useUrlSync, useConfig, useConfigProp } from "./store";
 
 const ColorPanel = React.memo(() => {
 	return (
@@ -84,6 +86,30 @@ const TypographyPanel = React.memo(() => {
 	);
 });
 
+const CoreParagraphFontSizeControl = React.memo(() => {
+	const prop = `core/paragraph.styles.typography.fontSize`;
+	const [fontSize, update] = useConfigProp(prop);
+
+	const handleOnChange = next => {
+		update({ prop, value: next });
+	};
+
+	return (
+		<FormControl label="Font Size" templateColumns="1fr 1fr">
+			<TextInput value={fontSize} onChange={handleOnChange} />
+		</FormControl>
+	);
+});
+
+const CoreParagraphPanel = React.memo(() => {
+	return (
+		<ListGroup>
+			<ListGroupHeader>Core/Paragraph</ListGroupHeader>
+			<CoreParagraphFontSizeControl />
+		</ListGroup>
+	);
+});
+
 const Header = React.memo(() => {
 	const { reset, hasChange } = useConfig();
 
@@ -101,11 +127,6 @@ const Header = React.memo(() => {
 			</Button>
 		</HStack>
 	);
-});
-
-const AppUrlSync = React.memo(() => {
-	useUrlSync();
-	return null;
 });
 
 const Footer = React.memo(() => {
@@ -134,7 +155,6 @@ const Footer = React.memo(() => {
 function App() {
 	return (
 		<Layout>
-			<AppUrlSync />
 			<Spacer mb={8}>
 				<Logo />
 			</Spacer>
@@ -148,6 +168,7 @@ function App() {
 				<ColorPanel />
 				<SpacingPanel />
 				<TypographyPanel />
+				<CoreParagraphPanel />
 			</ListGroups>
 			<Footer />
 		</Layout>

@@ -13,11 +13,16 @@ import {
 	Surface,
 	Card,
 	VStack,
-	View
+	View,
+	Tabs,
+	Tab,
+	TabList,
+	TabPanel
 } from "@wp-g2/components";
 import { ThemeProvider, css, ui } from "@wp-g2/styles";
 import { useConfig } from "../store";
 import { useClipboard } from "@wp-g2/utils";
+import { LivePreview } from "./LivePreview";
 
 export const CopyToClipboardButton = React.memo(
 	({ label = "Copy", onClick, value, ...props }) => {
@@ -126,6 +131,23 @@ const CodePreview = React.memo(() => {
 	);
 });
 
+const RightHandSideContent = () => {
+	return (
+		<Tabs>
+			<TabList>
+				<Tab>Preview</Tab>
+				<Tab>JSON</Tab>
+			</TabList>
+			<TabPanel style={{ height: "100%" }}>
+				<LivePreview />
+			</TabPanel>
+			<TabPanel>
+				<CodePreview />
+			</TabPanel>
+		</Tabs>
+	);
+};
+
 export const Layout = React.memo(({ children }) => {
 	return (
 		<Grid
@@ -137,7 +159,7 @@ export const Layout = React.memo(({ children }) => {
 				bottom: 0;
 				right: 0;
 			`}
-			templateColumns="1fr minmax(400px, 35%)"
+			columns={2}
 		>
 			<Surface
 				borderRight
@@ -154,7 +176,9 @@ export const Layout = React.memo(({ children }) => {
 					<Spacer pb="20vh" />
 				</Scrollable>
 			</Surface>
-			<CodePreview />
+			<View>
+				<RightHandSideContent />
+			</View>
 		</Grid>
 	);
 });
