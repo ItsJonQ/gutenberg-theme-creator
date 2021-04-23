@@ -67,7 +67,7 @@ const fontSizeSchema = () => {
  */
 const __initialState__ = [
 	{
-		key: "settings.defaultscolor.custom",
+		key: "settings.defaults.color.custom",
 		category: "settings.defaultscolor",
 		type: DATA_TYPES.boolean,
 		value: true,
@@ -75,7 +75,7 @@ const __initialState__ = [
 		description: "Enable custom colors"
 	},
 	{
-		key: "settings.defaultscolor.customGradient",
+		key: "settings.defaults.color.customGradient",
 		category: "settings.defaultscolor",
 		type: DATA_TYPES.boolean,
 		value: true,
@@ -83,7 +83,7 @@ const __initialState__ = [
 		description: "Enable custom gradient colors"
 	},
 	{
-		key: "settings.defaultscolor.link",
+		key: "settings.defaults.color.link",
 		category: "settings.defaultscolor",
 		type: DATA_TYPES.boolean,
 		value: false,
@@ -92,7 +92,7 @@ const __initialState__ = [
 	},
 
 	{
-		key: "settings.defaultscolor.palette",
+		key: "settings.defaults.color.palette",
 		category: "settings.defaultscolor",
 		type: DATA_TYPES.array,
 		value: [],
@@ -113,8 +113,8 @@ const __initialState__ = [
 		description: "Add custom color presets"
 	},
 	{
-		key: "settings.defaultscolor.gradients",
-		category: "settings.defaultscolor",
+		key: "settings.defaults.color.gradients",
+		category: "settings.defaults.color",
 		type: DATA_TYPES.array,
 		value: [],
 		valueOf: [
@@ -134,48 +134,48 @@ const __initialState__ = [
 		description: "Add custom gradient presets"
 	},
 	{
-		key: "settings.defaultsspacing.customPadding",
-		category: "settings.defaultsspacing",
+		key: "settings.defaults.spacing.customPadding",
+		category: "settings.defaults.spacing",
 		type: DATA_TYPES.boolean,
 		value: true,
 		label: "Custom Padding",
 		description: "Enable padding controls"
 	},
 	{
-		key: "settings.defaultsspacing.units",
-		category: "settings.defaultsspacing",
+		key: "settings.defaults.spacing.units",
+		category: "settings.defaults.spacing",
 		type: DATA_TYPES.textArray,
 		value: ["px", "em", "rem", "vh", "vw"],
 		label: "Units",
 		description: "Filters unit values"
 	},
 	{
-		key: "settings.defaultstypography.customFontSize",
-		category: "settings.defaultstypography",
+		key: "settings.defaults.typography.customFontSize",
+		category: "settings.defaults.typography",
 		type: DATA_TYPES.boolean,
 		value: true,
 		label: "Custom Font Sizes",
 		description: "Enable custom font sizes"
 	},
 	{
-		key: "settings.defaultstypography.customLineHeight",
-		category: "settings.defaultstypography",
+		key: "settings.defaults.typography.customLineHeight",
+		category: "settings.defaults.typography",
 		type: DATA_TYPES.boolean,
 		value: false,
 		label: "Custom Line Height",
 		description: "Enable custom line height controls"
 	},
 	{
-		key: "settings.defaultstypography.dropCap",
-		category: "settings.defaultstypography",
+		key: "settings.defaults.typography.dropCap",
+		category: "settings.defaults.typography",
 		type: DATA_TYPES.boolean,
 		value: true,
 		label: "Dropcap",
 		description: "Enable drop cap controls"
 	},
 	{
-		key: "settings.defaultstypography.fontSizes",
-		category: "settings.defaultstypography",
+		key: "settings.defaults.typography.fontSizes",
+		category: "settings.defaults.typography",
 		type: DATA_TYPES.array,
 		value: [],
 		valueOf: [
@@ -198,15 +198,15 @@ const __initialState__ = [
 
 const categories = [
 	{
-		key: "settings.defaultscolor",
+		key: "settings.defaults.color",
 		label: "Color"
 	},
 	{
-		key: "settings.defaultsspacing",
+		key: "settings.defaults.spacing",
 		label: "Spacing"
 	},
 	{
-		key: "settings.defaultstypography",
+		key: "settings.defaults.typography",
 		label: "Typography"
 	}
 ];

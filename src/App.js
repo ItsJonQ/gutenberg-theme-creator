@@ -28,7 +28,7 @@ const ColorPanel = React.memo(() => {
 			<SwitchControl
 				label="Custom"
 				helpText="Enable custom colors"
-				prop="settings.defaultscolor.custom"
+				prop="settings.defaults.color.custom"
 			/>
 			<SwitchControl
 				label="Custom Gradient"
@@ -53,7 +53,7 @@ const SpacingPanel = React.memo(() => {
 			<SwitchControl
 				label="Custom Padding"
 				helpText="Enable padding controls"
-				prop="settings.defaultsspacing.customPadding"
+				prop="settings.defaults.spacing.customPadding"
 			/>
 			<UnitControl />
 		</ListGroup>
