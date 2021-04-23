@@ -32,11 +32,11 @@ const gradientSchema = () => {
 };
 
 const GradientColor = React.memo(({ index = 0 }) => {
-	const prop = `global.settings.color.gradients[${index}]`;
+	const prop = `settings.defaults.color.gradients[${index}]`;
 	const [gradients, update] = useConfigProp(prop);
 
 	const onRemove = useRemoveFromList({
-		prop: "config.global.settings.color.gradients",
+		prop: "config.settings.defaults.color.gradients",
 		index
 	});
 
@@ -131,7 +131,7 @@ const GradientList = React.memo(() => {
 
 const GradientHeader = React.memo(() => {
 	const addGradient = useAddToList({
-		prop: "config.global.settings.color.gradients",
+		prop: "config.settings.defaults.color.gradients",
 		createData: gradientSchema
 	});
 

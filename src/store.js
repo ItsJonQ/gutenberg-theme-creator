@@ -9,8 +9,8 @@ import { createStore, shallowCompare } from "@wp-g2/substate";
  * https://github.com/WordPress/gutenberg/blob/d4d083083306de27675eee3eed24c8cfd9bd80d5/docs/designers-developers/developers/themes/theme-json.md#settings
  */
 const __initialState__ = {
-	global: {
-		settings: {
+	settings: {
+		defaults: {
 			color: {
 				custom: true /* false to opt-out, as in add_theme_support('disable-custom-colors') */,
 				customGradient: true /* false to opt-out, as in add_theme_support('disable-custom-gradients') */,
@@ -136,15 +136,15 @@ export const useConfigProp = prop => {
 };
 
 export const usePalette = () => {
-	return useConfigProp(`global.settings.color.palette`);
+	return useConfigProp(`settings.defaults.color.palette`);
 };
 
 export const useGradients = () => {
-	return useConfigProp(`global.settings.color.gradients`);
+	return useConfigProp(`settings.defaults.color.gradients`);
 };
 
 export const useFontSizes = () => {
-	return useConfigProp(`global.settings.typography.fontSizes`);
+	return useConfigProp(`settings.defaults.typography.fontSizes`);
 };
 
 export const useAddToList = ({ prop, createData }) => {

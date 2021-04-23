@@ -5,7 +5,7 @@ import { SearchableItem } from "./Search";
 import { useConfigProp } from "../store";
 
 export const UnitControl = React.memo(() => {
-	const prop = `global.settings.spacing.units`;
+	const prop = `settings.defaults.spacing.units`;
 	const [value, update] = useConfigProp(prop);
 
 	const transform = React.useCallback(value => {
