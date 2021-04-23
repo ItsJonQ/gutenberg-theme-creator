@@ -68,7 +68,7 @@ const fontSizeSchema = () => {
 const __initialState__ = [
 	{
 		key: "settings.defaults.color.custom",
-		category: "settings.defaultscolor",
+		category: "settings.defaults.color",
 		type: DATA_TYPES.boolean,
 		value: true,
 		label: "Custom",
@@ -76,7 +76,7 @@ const __initialState__ = [
 	},
 	{
 		key: "settings.defaults.color.customGradient",
-		category: "settings.defaultscolor",
+		category: "settings.defaults.color",
 		type: DATA_TYPES.boolean,
 		value: true,
 		label: "Custom Gradient",
@@ -84,7 +84,7 @@ const __initialState__ = [
 	},
 	{
 		key: "settings.defaults.color.link",
-		category: "settings.defaultscolor",
+		category: "settings.defaults.color",
 		type: DATA_TYPES.boolean,
 		value: false,
 		label: "Link",
@@ -93,7 +93,7 @@ const __initialState__ = [
 
 	{
 		key: "settings.defaults.color.palette",
-		category: "settings.defaultscolor",
+		category: "settings.defaults.color",
 		type: DATA_TYPES.array,
 		value: [],
 		valueOf: [
