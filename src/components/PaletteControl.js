@@ -28,11 +28,11 @@ const colorSchema = () => {
 };
 
 const PaletteColor = React.memo(({ index = 0 }) => {
-	const prop = `global.settings.color.palette[${index}]`;
+	const prop = `settings.defaults.color.palette[${index}]`;
 	const [palette, update] = useConfigProp(prop);
 
 	const onRemove = useRemoveFromList({
-		prop: "config.global.settings.color.palette",
+		prop: "config.settings.defaults.color.palette",
 		index
 	});
 
@@ -128,7 +128,7 @@ const PaletteList = React.memo(() => {
 
 const PaletteHeader = React.memo(() => {
 	const addColor = useAddToList({
-		prop: "config.global.settings.color.palette",
+		prop: "config.settings.defaults.color.palette",
 		createData: colorSchema
 	});
 
