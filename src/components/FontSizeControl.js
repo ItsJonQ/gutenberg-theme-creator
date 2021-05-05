@@ -47,11 +47,11 @@ const fontSizeSchema = () => {
 };
 
 const FontSizeItem = React.memo(({ index = 0 }) => {
-	const prop = `settings.defaults.typography.fontSizes[${index}]`;
+	const prop = `settings.typography.fontSizes[${index}]`;
 	const [fontSize, update] = useConfigProp(prop);
 
 	const onRemove = useRemoveFromList({
-		prop: "config.settings.defaults.typography.fontSizes",
+		prop: "config.settings.typography.fontSizes",
 		index
 	});
 
@@ -135,7 +135,7 @@ const FontSizeList = React.memo(() => {
 
 const FontSizeHeader = React.memo(() => {
 	const addFontSize = useAddToList({
-		prop: "config.settings.defaults.typography.fontSizes",
+		prop: "config.settings.typography.fontSizes",
 		createData: fontSizeSchema
 	});
 

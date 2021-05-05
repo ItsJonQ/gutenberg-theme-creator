@@ -10,30 +10,28 @@ import { createStore, shallowCompare } from "@wp-g2/substate";
  */
 const __initialState__ = {
 	settings: {
-		defaults: {
-			color: {
-				custom: true /* false to opt-out, as in add_theme_support('disable-custom-colors') */,
-				customGradient: true /* false to opt-out, as in add_theme_support('disable-custom-gradients') */,
-				gradients: [] /* gradient presets, as in add_theme_support('editor-gradient-presets',) */,
-				link: false /* true to opt-in, as in add_theme_support('experimental-link-color') */,
-				palette: [] /* color presets, as in add_theme_support('editor-color-palette',) */
-			},
-			spacing: {
-				customPadding: false /* true to opt-in, as in add_theme_support('experimental-custom-spacing') */,
-				units: [
-					"px",
-					"em",
-					"rem",
-					"vh",
-					"vw"
-				] /* filter values, as in add_theme_support('custom-units',) */
-			},
-			typography: {
-				customFontSize: true /* false to opt-out, as in add_theme_support( 'disable-custom-font-sizes' ) */,
-				customLineHeight: false /* true to opt-in, as in add_theme_support( 'custom-line-height' ) */,
-				dropCap: true /* false to opt-out */,
-				fontSizes: [] /* font size presets, as in add_theme_support('editor-font-sizes',) */
-			}
+		color: {
+			custom: true /* false to opt-out, as in add_theme_support('disable-custom-colors') */,
+			customGradient: true /* false to opt-out, as in add_theme_support('disable-custom-gradients') */,
+			gradients: [] /* gradient presets, as in add_theme_support('editor-gradient-presets',) */,
+			link: false /* true to opt-in, as in add_theme_support('experimental-link-color') */,
+			palette: [] /* color presets, as in add_theme_support('editor-color-palette',) */
+		},
+		spacing: {
+			customPadding: false /* true to opt-in, as in add_theme_support('experimental-custom-spacing') */,
+			units: [
+				"px",
+				"em",
+				"rem",
+				"vh",
+				"vw"
+			] /* filter values, as in add_theme_support('custom-units',) */
+		},
+		typography: {
+			customFontSize: true /* false to opt-out, as in add_theme_support( 'disable-custom-font-sizes' ) */,
+			customLineHeight: false /* true to opt-in, as in add_theme_support( 'custom-line-height' ) */,
+			dropCap: true /* false to opt-out */,
+			fontSizes: [] /* font size presets, as in add_theme_support('editor-font-sizes',) */
 		}
 	}
 };
@@ -136,15 +134,15 @@ export const useConfigProp = prop => {
 };
 
 export const usePalette = () => {
-	return useConfigProp(`settings.defaults.color.palette`);
+	return useConfigProp(`settings.color.palette`);
 };
 
 export const useGradients = () => {
-	return useConfigProp(`settings.defaults.color.gradients`);
+	return useConfigProp(`settings.color.gradients`);
 };
 
 export const useFontSizes = () => {
-	return useConfigProp(`settings.defaults.typography.fontSizes`);
+	return useConfigProp(`settings.typography.fontSizes`);
 };
 
 export const useAddToList = ({ prop, createData }) => {
