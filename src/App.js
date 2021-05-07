@@ -28,17 +28,17 @@ const ColorPanel = React.memo(() => {
 			<SwitchControl
 				label="Custom"
 				helpText="Enable custom colors"
-				prop="settings.defaults.color.custom"
+				prop="settings.color.custom"
 			/>
 			<SwitchControl
 				label="Custom Gradient"
 				helpText="Enable custom gradients"
-				prop="settings.defaults.color.customGradient"
+				prop="settings.color.customGradient"
 			/>
 			<SwitchControl
 				label="Link"
 				helpText="Enables custom link color controls"
-				prop="settings.defaults.color.link"
+				prop="settings.color.link"
 			/>
 			<PaletteControl />
 			<GradientControl />
@@ -53,7 +53,7 @@ const SpacingPanel = React.memo(() => {
 			<SwitchControl
 				label="Custom Padding"
 				helpText="Enable padding controls"
-				prop="settings.defaults.spacing.customPadding"
+				prop="settings.spacing.customPadding"
 			/>
 			<UnitControl />
 		</ListGroup>
@@ -67,17 +67,17 @@ const TypographyPanel = React.memo(() => {
 			<SwitchControl
 				label="Custom Font Sizes"
 				helpText="Enable custom font sizes"
-				prop="settings.defaults.typography.customFontSize"
+				prop="settings.typography.customFontSize"
 			/>
 			<SwitchControl
 				label="Custom Line Height"
 				helpText="Enable line height controls"
-				prop="settings.defaults.typography.customLineHeight"
+				prop="settings.typography.customLineHeight"
 			/>
 			<SwitchControl
 				label="Dropcap"
 				helpText="Enable drop cap controls"
-				prop="settings.defaults.typography.dropCap"
+				prop="settings.typography.dropCap"
 			/>
 			<FontSizeControl />
 		</ListGroup>
