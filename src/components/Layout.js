@@ -50,7 +50,7 @@ export const Logo = React.memo(() => {
 			</VStack>
 			<View>
 				<Button
-					href="https://github.com/WordPress/gutenberg/blob/master/docs/designers-developers/developers/themes/theme-json.md"
+					href="https://github.com/WordPress/gutenberg/blob/trunk/docs/how-to-guides/themes/theme-json.md"
 					target="_blank"
 					size="small"
 				>
